@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>职战：技能与器具 v2.7.0</title>
+<title>职战：技能与器具 v2.6.0</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;user-select:none}
 body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gradient(ellipse at center,#1a1a2e 0%,#0f0f1a 100%);color:#e0e0e0;min-height:100vh;overflow-x:hidden}
@@ -87,6 +87,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 }
 .header-btn:hover{background:rgba(255,255,255,.1);color:#fff}
 
+/* ==== 行内消息条（原悬浮弹幕改版）==== */
 #chatNotify{
   order:1;
   flex:0 0 auto;
@@ -129,6 +130,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 #gameScreen.rotate-panels #p1Panel{order:2}
 
 .player-panel{flex:0 0 auto;position:relative;overflow:hidden}
+
 .player-panel.is-active-panel{
   flex:1 1 auto;
   min-height:0;
@@ -156,6 +158,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
   margin-top:auto;
 }
 
+/* ==== 面板反馈动画 ==== */
 .player-panel.hit-shake{animation:hitShake 0.45s ease;}
 @keyframes hitShake{
   0%{transform:translateX(0)}
@@ -196,8 +199,12 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
   animation:flashFade 0.55s ease forwards;
   z-index:5;
 }
-@keyframes flashFade{0%{opacity:1}100%{opacity:0}}
+@keyframes flashFade{
+  0%{opacity:1}
+  100%{opacity:0}
+}
 
+/* ==== 出牌飞行动画 ==== */
 .fly-card{
   position:fixed !important;
   z-index:999;
@@ -207,7 +214,13 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
   box-shadow:0 0 30px rgba(240,192,64,.85) !important;
   border-color:#f0c040 !important;
 }
+.fly-card:hover{
+  transform:none !important;
+  border-color:#f0c040 !important;
+  box-shadow:0 0 30px rgba(240,192,64,.85) !important;
+}
 
+/* ==== 反制触发全屏特效 ==== */
 .counter-trigger-effect{
   position:fixed;
   top:50%;
@@ -272,6 +285,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .stat-temp{color:#fb923c;font-size:11px}
 .stat-burn{color:#f97316;font-size:11px}
 .stat-energy{color:#fbbf24;font-weight:bold;font-size:15px;text-shadow:0 0 5px rgba(251,191,36,.55)}
+.stat-discount{color:#c084fc;font-size:11px;font-weight:bold}
 .hp-bar{width:100%;height:7px;background:#2a1a1a;border-radius:4px;margin-top:5px;overflow:hidden}
 .hp-fill{height:100%;background:linear-gradient(90deg,#ef4444,#f87171);border-radius:4px;transition:width .4s ease}
 
@@ -321,6 +335,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .equip-slot .eq-name{font-weight:bold;color:#f0c040;font-size:12px;line-height:1.15}
 .equip-slot .eq-desc{color:#888;font-size:10px;margin-top:1px;line-height:1.2}
 .equip-slot .eq-cd{color:#ef4444;font-size:10px;margin-top:1px;line-height:1.1}
+.equip-slot .eq-ready{color:#4ade80;font-size:10px;margin-top:1px;line-height:1.1}
 .equip-slot .eq-cost{color:#fbbf24;font-size:10px;margin-top:1px;line-height:1.1}
 .equip-slot .eq-toggle{font-size:10px;margin-top:1px;line-height:1.1;font-weight:bold;color:#fbbf24}
 .equip-slot .eq-toggle.off{color:#888}
@@ -349,6 +364,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 }
 .counter-card .cc-name{font-size:10px;font-weight:bold;color:#f0c040;margin:0;line-height:1;white-space:nowrap}
 .counter-card .cc-lv{font-size:9px;padding:1px 4px;border-radius:4px;margin:0 0 0 4px;line-height:1;flex-shrink:0}
+.counter-card .cc-desc{display:none}
 .counter-card.hidden-counter{width:48px;min-width:48px;height:24px;font-size:10px;color:#d8b4fe}
 .counter-card.own{cursor:pointer;transition:all .2s}
 .counter-card.own:hover{background:linear-gradient(160deg,#5a2a5a,#3a1a3a);border-color:#d8b4fe}
@@ -389,6 +405,8 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .card-meta{font-size:8px;color:#888;line-height:1.15;margin-top:1px}
 .card-meta .cm-cd{color:#ef4444;font-weight:bold}
 .card-meta .cm-cost{color:#fbbf24;font-weight:bold}
+.card-cost{font-size:9px;color:#fbbf24;font-weight:bold;line-height:1.2;margin-top:1px}
+.card-type{font-size:9px;color:#888;line-height:1.2}
 .card-effect{font-size:8.5px;color:#aaa;line-height:1.2;margin-top:2px;flex:1;overflow:hidden}
 .card-effect b{color:#f0c040;font-weight:bold}
 
@@ -412,6 +430,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .action-btn.skill{background:linear-gradient(135deg,#4c1d95,#7c3aed);border-color:#a855f7;color:#fff}
 .action-btn.skill:hover:not(:disabled){border-color:#d8b4fe;box-shadow:0 4px 12px rgba(168,85,247,.4)}
 .action-btn.undo{background:linear-gradient(135deg,#1e3a5f,#1e40af);border-color:#3b82f6;color:#fff}
+.action-btn.undo:hover:not(:disabled){border-color:#60a5fa;box-shadow:0 4px 12px rgba(59,130,246,.4)}
 .action-info{font-size:12px;color:#888;margin-left:auto;white-space:nowrap}
 
 .player-panel.compact{padding:6px 10px}
@@ -425,6 +444,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .player-panel.compact .equip-slot .eq-name{font-size:11px}
 .player-panel.compact .equip-slot .eq-desc{display:none}
 .player-panel.compact .equip-slot .eq-cd,
+.player-panel.compact .equip-slot .eq-ready,
 .player-panel.compact .equip-slot .eq-cost,
 .player-panel.compact .equip-slot .eq-toggle{font-size:9px;margin-top:0}
 .player-panel.compact .counter-zone{margin-top:4px}
@@ -581,6 +601,10 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .card-detail .cd-type{font-size:13px;color:#888;margin-top:8px}
 .card-detail .cd-effect{margin-top:18px;padding:16px 20px;background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.3);border-radius:10px;font-size:15px;color:#f0c040;line-height:1.7;font-weight:500}
 .card-detail .cd-effect b{color:#fff;background:rgba(240,192,64,.2);padding:0 5px;border-radius:4px;font-weight:bold}
+.card-detail .cd-cd{margin-top:12px;font-size:13px;color:#ef4444}
+.card-detail .cd-energy{margin-top:8px;font-size:13px;color:#fbbf24;font-weight:bold}
+.card-detail .cd-turn{margin-top:8px;font-size:12px;color:#94a3b8}
+.card-detail .cd-flavor{margin-top:14px;font-size:12px;color:#666;font-style:italic}
 .card-detail .cd-info-block{margin-top:14px;padding:12px 16px;background:rgba(255,255,255,.04);border-radius:10px;text-align:left;font-size:12px;color:#aaa;line-height:1.8}
 .card-detail .cd-info-block .cd-info-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .card-detail .cd-info-block .cd-info-row:last-child{border-bottom:none}
@@ -597,48 +621,33 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 .opp-card .oc-effect{font-size:11px;color:#f0c040;line-height:1.4}
 .opp-card .oc-effect b{color:#fff;background:rgba(240,192,64,.2);padding:0 3px;border-radius:3px}
 
-/* ====== 联机相关 ====== */
-.online-room-code{text-align:center;margin-bottom:20px}
-.online-room-code .code{
-  font-size:34px;font-weight:bold;color:#f0c040;letter-spacing:8px;
-  background:rgba(240,192,64,.1);padding:14px 24px;border-radius:12px;
-  border:2px solid #f0c040;display:inline-block;margin-top:8px;
-}
-.online-status{text-align:center;padding:12px;background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:18px;font-size:14px}
-.online-status.connected{color:#4ade80}
-.online-status.waiting{color:#f59e0b}
-.online-player-slot{padding:14px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid #3a3a5a;margin-bottom:12px}
-.online-player-slot.ready{border-color:#4ade80;background:rgba(74,222,128,.06)}
-.online-player-slot .op-name{font-size:15px;font-weight:bold;color:#f0c040;margin-bottom:6px}
-.online-player-slot .op-info{font-size:12px;color:#aaa;line-height:1.7}
-.online-player-slot .op-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;margin-left:6px}
-.online-player-slot .op-tag.ready{background:rgba(74,222,128,.2);color:#4ade80}
-.online-player-slot .op-tag.waiting{background:rgba(245,158,11,.2);color:#f59e0b}
-.online-choose-title{font-size:14px;color:#f0c040;margin:16px 0 8px;font-weight:bold}
-.online-room-code .online-warn{
-  font-size:11px;color:#f59e0b;margin-top:10px;line-height:1.6;
-}
-
 @media(max-width:600px){
 .menu-title{font-size:32px;margin-top:40px}
 .class-grid{grid-template-columns:1fr}
 .hotseat-grid{grid-template-columns:1fr}
 .mode-grid{grid-template-columns:1fr}
 .foresight-card{min-width:80px;width:80px;height:130px}
-.online-room-code .code{font-size:28px;letter-spacing:6px;padding:12px 18px}
 }
 @media(max-height:700px){
 .card{min-width:76px;width:76px;height:112px}
 .card-name{font-size:10px;margin-top:10px}
 .card-effect{font-size:8px}
+.card-tags{font-size:8px}
+.card-meta{font-size:7.5px}
 .player-panel.is-active-panel .hand-cards{min-height:70px}
 .action-btn{padding:7px 12px;font-size:12px}
 .player-panel{padding:6px 9px}
+.stat-hp{font-size:14px}
+.stat-energy{font-size:14px}
 }
 @media(max-height:640px){
 .card{min-width:70px;width:70px;height:104px}
-.card-effect{font-size:7.5px}
+.card-effect{font-size:7.5px;line-height:1.2}
+.card-tags{font-size:8px}
+.card-meta{font-size:7px}
 .player-panel.is-active-panel .hand-cards{min-height:60px}
+.equip-slot{min-width:70px;padding:3px 6px}
+.equip-slot .eq-desc{display:none}
 }
 </style>
 </head>
@@ -647,49 +656,15 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 
 <div id="menuScreen" class="screen active">
 <h1 class="menu-title">职战</h1>
-<div class="menu-subtitle">技能与器具 · 卡牌对战 v2.7.0</div>
+<div class="menu-subtitle">技能与器具 · 卡牌对战 v2.6.0</div>
 <div class="menu-buttons">
 <button class="menu-btn" onclick="startAIMode()">🤖 AI对战</button>
-<button class="menu-btn" onclick="showScreen('pvpScreen')">👥 玩家对战</button>
+<button class="menu-btn" onclick="startHotseatMode()">👥 传递热座</button>
 <button class="menu-btn" onclick="openDeckManager()">🛠 牌组管理</button>
 <button class="menu-btn" onclick="showRules()">📖 游戏规则</button>
 <button class="menu-btn" onclick="openCodex()">📚 图鉴</button>
 <button class="menu-btn" onclick="showImportCode()">📥 导入牌组码</button>
 </div>
-</div>
-
-<div id="pvpScreen" class="screen">
-<button class="back-btn" onclick="showScreen('menuScreen')">← 返回</button>
-<h2 class="section-title">玩家对战</h2>
-<div class="mode-grid">
-<div class="mode-card" onclick="startHotseatMode()">
-<div class="mode-name">👥 传递热座</div>
-<div class="mode-desc">同一设备轮流传玩<br>互相回避，轮换操作</div>
-</div>
-<div class="mode-card" onclick="openOnlineLobby()">
-<div class="mode-name">🌐 联机对战</div>
-<div class="mode-desc">输入房间码与好友对战<br>支持手机浏览器</div>
-</div>
-</div>
-</div>
-
-<div id="onlineLobbyScreen" class="screen">
-<button class="back-btn" onclick="showScreen('pvpScreen')">← 返回</button>
-<h2 class="section-title">联机对战</h2>
-<div class="menu-buttons" style="max-width:340px;margin:0 auto">
-<button class="menu-btn" onclick="hostOnlineGame()">🏠 创建房间</button>
-<button class="menu-btn" onclick="showJoinRoomInput()">🚪 加入房间</button>
-</div>
-<div style="text-align:center;color:#888;font-size:12px;margin-top:24px;padding:0 20px;line-height:1.8">
-创建房间后会得到一个 6 位房间码<br>把它发给好友即可加入<br>
-<span style="color:#f59e0b">微信内可能无法联机，请用浏览器打开</span>
-</div>
-</div>
-
-<div id="onlineRoomScreen" class="screen">
-<button class="back-btn" onclick="leaveOnlineRoom()">← 离开</button>
-<h2 class="section-title">房间</h2>
-<div id="onlineRoomContent" style="max-width:700px;margin:0 auto;padding:0 16px"></div>
 </div>
 
 <div id="modeScreen" class="screen">
@@ -743,7 +718,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 </div>
 
 <div id="hotseatSetupScreen" class="screen">
-<button class="back-btn" onclick="showScreen('pvpScreen')">← 返回</button>
+<button class="back-btn" onclick="showScreen('modeScreen')">← 返回</button>
 <h2 class="section-title">双人对战设置</h2>
 <div class="hotseat-grid">
 <div class="hotseat-col p1">
@@ -854,7 +829,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 <div class="deck-stat" id="deckSSRStat">SSR级：<span id="deckSSRCount">0</span>/4</div>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="action-btn undo" onclick="undoDeck()">↶ 撤销</button>
+<button class="action-btn undo" onclick="undoDeck()">↶ 撤销上一步</button>
 <button class="action-btn" onclick="autoFillDeck()">自动补齐</button>
 <button class="action-btn" onclick="clearDeck()">清空</button>
 <button class="action-btn" onclick="exportDeck()">导出牌组码</button>
@@ -944,57 +919,60 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:radial-gr
 
 <script>
 const UPDATE_LOG = [
-  { version:"v2.7.0", date:"2025", items:[
-    "【新增】🌐 联机对战（PeerJS，P2P直连，无需服务器）",
-    "【新增】主菜单新增「👥 玩家对战」入口，内含传递热座与联机对战",
-    "【新增】6位房间码，房主创建后分享给好友加入",
-    "【新增】方案B选职业：房主先选，客户端看到后再选",
-    "【新增】随机先手，后手多摸1张",
-    "【新增】房主权威模式：所有逻辑在房主端，客户端只渲染，防止作弊",
-    "【新增】隐藏信息：客户端看不到房主手牌、反制牌、牌堆",
-    "【新增】双方准备按钮，都准备好后自动开始",
-    "【新增】对局结束提示再战，重新选择职业和牌组",
-    "【新增】断线后对方立即获胜",
-    "【新增】客户端自动翻转面板，自己面板在底部",
-    "【提示】微信内可能无法联机，请用浏览器打开"
-  ]},
   { version:"v2.6.0", date:"2025", items:[
-    "【UI】战斗消息改为行内 ticker，不再遮挡手牌/血量",
+    "【UI】战斗消息改为行内 ticker（游戏头部下方），彻底不再遮挡手牌/血量",
+    "【UI】面板顺序调整：header → 消息条 → p2 → p1（热座翻转同步）",
     "【修复】陷阱现在能正确取消功能牌并反击 2 点",
-    "【修复】反制事件归属纠正",
-    "【修复】自食其果改为反弹技能实际伤害",
+    "【修复】反制事件归属纠正：闪避/绝对防御响应攻击，沉默/自食其果响应技能，陷阱响应功能",
+    "【修复】自食其果改为反弹技能实际伤害（不再写死 3）",
     "【修复】迅捷被动在普攻后摸 1 张",
-    "【修复】难度 extraDraw 生效",
+    "【修复】难度 extraDraw 生效（噩梦/地狱每轮 AI 多摸 1）",
     "【修复】共鸣减费严格只作用于下一张技能",
     "【修复】预知剩余牌真正放回牌库底",
     "【修复】不屈不再二次免死",
-    "【修复】末日自伤走 applyDamage",
+    "【修复】末日自伤走 applyDamage（吃护盾/铁卫/不屈）",
     "【修复】灼烧伤害吃铁卫减伤",
     "【修复】灵魂链接回血/增益方向修正",
-    "【平衡】默认四代补齐到 60 张",
+    "【平衡】默认四代补齐到 60 张（R 恰好 17）",
     "【AI】会装备更多被动、会用功能牌、会用拆除、预知自动选牌",
     "【系统】同时死亡且无末日释放者 → 平局",
-    "【系统】牌组导入/保存统一校验",
-    "【系统】复制降级到 execCommand"
+    "【系统】牌组导入/保存统一做稀有度与数量校验",
+    "【系统】复制降级到 execCommand，长按看详情加入 10px 移动阈值",
+    "【系统】非己方/非当前玩家锐眼槽点击改为「看详情」"
   ]},
   { version:"v2.5.0", date:"2025", items:[
-    "【职业】全体基础攻击力统一调整为 1",
-    "【S1-S4】大量数值调整"
+    "【职业】全体基础攻击力统一调整为 1（原为 2）",
+    "【职业】剑豪：普攻伤害 +1",
+    "【职业】术士：被动改为「拥有两个技能槽」",
+    "【职业】游侠：被动改为「手牌上限为12」",
+    "【职业】铁卫：被动改为「所有受伤-1（最低1点）」",
+    "【职业】谐振：回合开始额外+1能量",
+    "【S1】治疗术 CD 0→1，锐眼普攻⚡5→⚡6，沉默摸2→摸1，天雷⚡4→⚡5，威严 +3攻/+7血",
+    "【S2】连锁闪电 CD 1→2，生命虹吸回复 2→4，自食其果⚡4→⚡5，灵魂链接⚡12→⚡8/CD 3→5",
+    "【S3】镜像⚡2→⚡3/CD 2→1，诅咒⚡5→⚡3/CD 2→1，血契⚡2→⚡0/CD 0→1/伤 5→4，末日⚡6→⚡2/伤 4→5",
+    "【S4】余音 +3→+2 能量，坍缩公式 ceil(消/2)+2 → floor(消/4)+2，共振场 +4→+3 能量"
   ]},
   { version:"v2.4.0", date:"2025", items:[
-    "【动画】新增出牌飞行、受伤抖动、治疗/护盾闪烁、反制触发全屏特效"
+    "【UI】弹幕位置从右上角改为屏幕右侧垂直居中",
+    "【动画】新增出牌飞行动画、受伤抖动、治疗/护盾闪烁、反制触发全屏特效"
   ]},
   { version:"v2.3.0", date:"2025", items:[
-    "【体系】反制牌新增放置能耗，拆除固定⚡3，牌库上限N×10/R×6/SR×4/SSR×2"
+    "【体系】反制牌新增放置能耗",
+    "【体系】反制牌替换独立扣费；拆除固定⚡3",
+    "【平衡】牌库单卡上限：N×10、R×6、SR×4、SSR×2",
+    "【更名】对抗 → 抵抗"
   ]},
   { version:"v2.2.0", date:"2025", items:[
     "【平衡】一代至四代独有卡全面重做数值与能耗"
   ]},
   { version:"v2.1.2", date:"2024", items:[
-    "【新增】四代主题「共振」、新职业「谐振」"
+    "【新增】四代主题「共振」——能量经营与爆发",
+    "【新增】新职业「谐振」",
+    "【新增】内置「默认四代」牌组"
   ]},
   { version:"v2.1.1", date:"2024", items:[
-    "【锐眼重做】开关型技能，装入技能槽"
+    "【锐眼重做】开关型技能，装入技能槽",
+    "【新增】集能（C级）、充能（B级）"
   ]},
   { version:"v2.1.0", date:"2024", items:[
     "【新增】能量系统"
@@ -1003,9 +981,16 @@ const UPDATE_LOG = [
     "【修复】热座模式手牌横向滑动",
     "【重构】装备槽改为技能槽 + 被动槽分离"
   ]},
+  { version:"v2.0.0", date:"2024", items:[
+    "全卡牌名称和数值统一调整",
+    "新增模式系统：标准模式 / 构筑模式"
+  ]},
   { version:"v1.0.0", date:"2024", items:["初始版本发布"]}
 ];
 
+/* ============================================================
+   卡牌数据库 v2.6.0
+   ============================================================ */
 const CARD_DB = {
   "BASIC_HEAL_1":{name:"回血",rarity:"N",major:"守",minor:"益",type:"heal",effect:"回复1点生命",desc:"回复1点生命",count:10},
   "BASIC_TEMPATK_1":{name:"锋利",rarity:"N",major:"守",minor:"益",type:"buff",effect:"下次攻击+1",desc:"下次攻击+1（无上限）",count:10},
@@ -1209,6 +1194,9 @@ function consumesTurn(cardData){
   return !!(cardData && cardData.type === "skill" && cardData.damaging === true);
 }
 
+/* ============================================================
+   复制工具（带降级）
+   ============================================================ */
 function copyText(text){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(()=>toast("已复制")).catch(()=>fallbackCopy(text));
@@ -1232,6 +1220,9 @@ function fallbackCopy(text){
   }
 }
 
+/* ============================================================
+   面板反馈
+   ============================================================ */
 function flashPanel(panelId, type){
   const panel = $(panelId);
   if(!panel) return;
@@ -1309,6 +1300,7 @@ function buildCardDetailHTML(cardData){
   const cost = getEnergyCost(cardData);
   const cd = cardData.cd || 0;
   const typeFull = typeNameFull(cardData.type);
+
   const effectHTML = formatCardDesc(cardData.desc || cardData.effect || "");
 
   let costText = "无消耗";
@@ -1357,9 +1349,12 @@ function buildCardDetailHTML(cardData){
     slotHint = '<span style="color:#d8b4fe">◈ 放入反制区（最多2张，仅自己可见）</span>';
   }
 
-  let seriesHTML = cardData.series
-    ? `<div class="cd-series">${cardData.series} 系列</div>`
-    : `<div class="cd-series">通用牌 · 所有牌组可用</div>`;
+  let seriesHTML = "";
+  if(cardData.series){
+    seriesHTML = `<div class="cd-series">${cardData.series} 系列</div>`;
+  } else {
+    seriesHTML = `<div class="cd-series">通用牌 · 所有牌组可用</div>`;
+  }
 
   return `
     <div class="card-detail">
@@ -1370,7 +1365,7 @@ function buildCardDetailHTML(cardData){
       ${seriesHTML}
       <div class="cd-effect">${effectHTML}</div>
       <div class="cd-info-block">
-        <div class="cd-info-row"><span class="cd-info-key">分类</span><span class="cd-info-val">${major} · ${minor}</span></div>
+        <div class="cd-info-row"><span class="cd-info-key">分类</span><span class="cd-info-val">${major} · ${minor}（大类 · 小类）</span></div>
         <div class="cd-info-row"><span class="cd-info-key">能耗</span><span class="cd-info-val" style="color:${costColor}">${costText}</span></div>
         <div class="cd-info-row"><span class="cd-info-key">冷却</span><span class="cd-info-val" style="color:${cd>0?'#ef4444':'#4ade80'}">${cdText}</span></div>
         <div class="cd-info-row"><span class="cd-info-key">回合</span><span class="cd-info-val">${turnText}</span></div>
@@ -1419,7 +1414,6 @@ function showOpponentHand(enemy, viewer){
 function getViewerSide(){
   if(!gameState) return "p1";
   if(gameState.mode === "ai") return "p1";
-  if(gameState.mode === "online") return ONLINE.isHost ? "p1" : "p2";
   return gameState.current;
 }
 
@@ -1430,10 +1424,6 @@ function getCompactPanels(){
     if(gameState.hotseatPhase !== "playing"){ return {p1:false, p2:false}; }
     const cur = gameState.current;
     return {p1: cur !== "p1", p2: cur !== "p2"};
-  }
-  if(gameState.mode === "online"){
-    if(ONLINE.isHost) return {p1:false, p2:true};
-    return {p1:true, p2:false};
   }
   return {p1:false, p2:false};
 }
@@ -1447,12 +1437,9 @@ function applyPanelCompact(){
 function applyPanelOrder(){
   const gs = $("gameScreen");
   if(!gameState){ gs.classList.remove("rotate-panels"); return; }
-  let rotate = false;
-  if(gameState.mode === "hotseat"){
-    rotate = gameState.hotseatPhase === "playing" && gameState.current === "p2";
-  } else if(gameState.mode === "online"){
-    rotate = !ONLINE.isHost;
-  }
+  const rotate = gameState.mode === "hotseat" &&
+                 gameState.hotseatPhase === "playing" &&
+                 gameState.current === "p2";
   gs.classList.toggle("rotate-panels", rotate);
 }
 
@@ -1464,6 +1451,7 @@ function shouldNotify(cls, msg){
   }
   return true;
 }
+/* 新版消息条：单条覆盖，行内显示，不遮挡任何内容 */
 function pushChatNotify(cls, msg){
   const box = $("chatNotify");
   if(!box) return;
@@ -1568,13 +1556,14 @@ function getAllDecks(){
 function getDeckNames(){return Object.keys(getAllDecks())}
 function getTotalCustomCount(){return Object.keys(uiState.customDecks).length}
 
+/* 统一牌组校验：返回 null 表示通过，否则返回错误信息 */
 function validateDeck(cards){
   const total = Object.values(cards).reduce((a,b)=>a+b,0);
   if(total < DECK_SIZE_MIN || total > DECK_SIZE_MAX) return "牌组总数必须为 "+DECK_SIZE_MIN+"~"+DECK_SIZE_MAX+" 张（当前 "+total+" 张）";
   const rC = countLv(cards,"R"), srC = countLv(cards,"SR"), ssrC = countLv(cards,"SSR");
-  if(rC > LIMIT_R) return "R 级超过上限 "+LIMIT_R;
-  if(srC > LIMIT_SR) return "SR 级超过上限 "+LIMIT_SR;
-  if(ssrC > LIMIT_SSR) return "SSR 级超过上限 "+LIMIT_SSR;
+  if(rC > LIMIT_R) return "R 级超过上限 "+LIMIT_R+"（当前 "+rC+"）";
+  if(srC > LIMIT_SR) return "SR 级超过上限 "+LIMIT_SR+"（当前 "+srC+"）";
+  if(ssrC > LIMIT_SSR) return "SSR 级超过上限 "+LIMIT_SSR+"（当前 "+ssrC+"）";
   for(const id in cards){
     if(!CARD_DB[id]) return "发现未知卡牌："+id;
     if(cards[id] > CARD_DB[id].count) return CARD_DB[id].name+" 超过单卡上限 "+CARD_DB[id].count;
@@ -1609,6 +1598,7 @@ function renderDeckList(){
   }
 }
 function countLv(cards,lv){let n=0;for(const id in cards)if(CARD_DB[id]&&CARD_DB[id].rarity===lv)n+=cards[id];return n}
+function countType(cards,type){let n=0;for(const id in cards)if(CARD_DB[id]&&CARD_DB[id].type===type)n+=cards[id];return n}
 function viewDeck(name){
   const all = getAllDecks();
   const d = all[name];
@@ -1942,14 +1932,13 @@ function showBattleLog(){
 function viewDiscard(side){
   if(!gameState) return;
   const p = side==="p1"?gameState.p1:gameState.p2;
-  if(!p.discard || p.discard.length === 0){toast("弃牌堆为空");return}
+  if(p.discard.length === 0){toast("弃牌堆为空");return}
   const counts = {};
   p.discard.forEach(id => counts[id] = (counts[id]||0)+1);
   const sortedIds = Object.keys(counts).sort((a,b)=>lvOrder(CARD_DB[a].rarity)-lvOrder(CARD_DB[b].rarity));
   let html = `<div style="text-align:left;font-size:12px;line-height:1.6">`;
   sortedIds.forEach(id=>{
     const c = CARD_DB[id];
-    if(!c) return;
     html += `<div class="view-card-row">
       <span style="flex:1"><span class="view-lv lv-${c.rarity}">${c.rarity}</span><b style="color:#fff">${c.name}</b>
       <span class="view-tags">${c.major}·${c.minor}</span>
@@ -1967,24 +1956,44 @@ function showRules(){
     `<div style="text-align:left;line-height:1.9;font-size:13px">
     <b style="color:#f0c040">◆ 职业</b><br>
     剑豪：10血 1技能槽+1被动槽 攻1，普攻+1<br>
-    术士：7血 2技能槽+1被动槽 攻1<br>
+    术士：7血 2技能槽+1被动槽 攻1，拥有两个技能槽<br>
     游侠：9血 1技能槽+1被动槽 攻1，手牌上限为12<br>
-    铁卫：12血 1技能槽+1被动槽 攻1，所有受伤-1<br>
+    铁卫：12血 1技能槽+1被动槽 攻1，所有受伤-1（最低1点）<br>
     <b style="color:#fbbf24">谐振</b>：8血 1技能槽+1被动槽 攻1，回合开始额外+1能量<br><br>
     <b style="color:#fbbf24">◆ 能量系统</b><br>
-    初始 0 点，无上限；回合开始 +1，普攻之后 +1<br>
+    初始 0 点，无上限<br>
+    回合开始 +1 · 普攻之后 +1<br>
     装备技能/被动不消耗能量<br>
-    反制牌放置时消耗对应能量，拆除固定⚡3<br><br>
-    <b style="color:#f0c040">◆ 联机对战</b><br>
-    房主创建房间，客户端输入6位房间码加入<br>
-    房主先选职业和牌组，客户端看到后再选<br>
-    双方都点“准备”后自动开始<br>
-    随机先手，后手多摸1张<br>
-    所有逻辑在房主端处理，防止作弊<br>
-    联机模式仅支持标准模式<br><br>
+    技能能耗按卡牌自身定义（见卡面）<br>
+    反制牌放置时消耗对应能量<br>
+    拆除牌固定消耗 ⚡3<br><br>
+    <b style="color:#c084fc">◆ 回合消耗</b><br>
+    伤害型技能 → 消耗回合<br>
+    增益型技能 → 不消耗回合<br>
+    反制/拆除/功能牌 → 不消耗回合<br><br>
+    <b style="color:#f0c040">◆ 装备槽</b><br>
+    技能槽（紫）只能装主动技能牌<br>
+    被动槽（青）只能装被动技能牌<br>
+    每回合最多装备/替换 1 次<br><br>
     <b style="color:#f0c040">◆ 稀有度</b><br>
-    N×10 · R×6 · SR×4 · SSR×2<br>
-    牌组限制：R≤17 · SR≤8 · SSR≤4 · 总数40~60<br>
+    N（普通）· R（稀有）· SR（超稀有）· SSR（传说）<br>
+    牌库上限：N×10 · R×6 · SR×4 · SSR×2<br>
+    牌组限制：R≤17 · SR≤8 · SSR≤4 · 总数40~60<br><br>
+    <b style="color:#f0c040">◆ 查看卡片详情</b><br>
+    长按手牌（或右键）、点击装备/反制牌，可查看完整效果<br><br>
+    <b style="color:#f0c040">◆ 攻击</b><br>
+    普攻：职业基础攻+永久攻+临时攻，最低1<br><br>
+    <b style="color:#f0c040">◆ 护盾</b><br>
+    上限8点，超过部分转化为生命回复<br><br>
+    <b style="color:#f0c040">◆ 反制</b><br>
+    最多2张，只有自己能看到效果<br>
+    攻击触发：抵抗 / 闪避 / 反击 / 绝对防御<br>
+    技能触发：沉默 / 自食其果<br>
+    功能牌触发：陷阱<br>
+    替换反制牌独立扣费，每回合限1次<br>
+    拆除对方反制：固定消耗 ⚡3<br><br>
+    <b style="color:#f0c040">◆ 手牌上限</b><br>
+    游侠为12张，其他职业为8张，回合结束时超出必须弃置<br><br>
     </div>`,
     [{text:"查看图鉴",fn:()=>{closeModal();openCodex();}},{text:"明白了",fn:closeModal}]);
 }
@@ -2093,9 +2102,10 @@ function startAIMode(){
 }
 function startHotseatMode(){
   gameMode = "hotseat";
-  selectedGameMode = "standard";
-  showScreen("hotseatSetupScreen");
-  renderHotseatSetup();
+  selectedGameMode = null;
+  showScreen("modeScreen");
+  document.querySelectorAll(".mode-card").forEach(c=>c.classList.remove("selected"));
+  $("modeConfirmBtn").disabled = true;
 }
 
 function renderAISetup(){
@@ -2149,7 +2159,7 @@ function renderDiffGrid(){
 }
 
 function renderHotseatSetup(){
-  const decks = getDeckNames();
+  const decks = selectedGameMode==="constructed" ? ["默认一代","默认二代","默认三代","默认四代"] : getDeckNames();
   const grid1 = $("p1ClassGrid");
   grid1.innerHTML = "";
   Object.keys(CLASSES).forEach(name=>{
@@ -2229,14 +2239,12 @@ function startHotseatGame(){
   const p2 = createPlayer("玩家2", uiState.hotseatP2Class, deck2, false, null);
   initGame(p1, p2, null);
 }
-
-function initGame(p1, p2, diff, firstPlayer){
-  if(!firstPlayer) firstPlayer = "p1";
+function initGame(p1, p2, diff){
   gameState = {
-    p1, p2, turn:1, current:firstPlayer, diff, mode:gameMode,
+    p1, p2, turn:1, current:"p1", diff, mode:gameMode,
     publicMode: selectedGameMode,
     gameOver:false, log:[],
-    hotseatPhase:null, hotseatCurrentPlayer:firstPlayer,
+    hotseatPhase:null, hotseatCurrentPlayer:"p1",
     pendingDiscard:null, discardSelected:[],
     pendingForesight:null,
     pendingForge:null,
@@ -2255,15 +2263,14 @@ function initGame(p1, p2, diff, firstPlayer){
   }
   drawCards(p1, 5);
   drawCards(p2, 5);
-  const secondPlayer = firstPlayer === "p1" ? p2 : p1;
-  drawCards(secondPlayer, 1);
-  if(diff && diff.extraDraw > 0 && p2.isAI){
+  drawCards(p2, 1);
+  if(diff && diff.extraDraw > 0){
     drawCards(p2, diff.extraDraw);
   }
   uiState.selectedCardUid = null;
   showScreen("gameScreen");
   renderGame();
-  addLog("sys","游戏开始！"+(firstPlayer==="p1"?p1.name:p2.name)+"先手，后手多摸1张。");
+  addLog("sys","游戏开始！"+p1.name+"先手，后手多摸1张。");
   if(gameMode==="ai" && diff && diff.aiLevel>=5){
     const m = gameState.aiMemory;
     const total = m.attackCount + m.skillCount + m.healCount + m.shieldCount + m.counterCount;
@@ -2271,13 +2278,8 @@ function initGame(p1, p2, diff, firstPlayer){
   }
   if(gameMode==="hotseat"){
     gameState.hotseatPhase = "handoff";
-    gameState.hotseatCurrentPlayer = firstPlayer;
-    const who = firstPlayer==="p1" ? "玩家1" : "玩家2";
-    const other = firstPlayer==="p1" ? "玩家2" : "玩家1";
-    showHandoff(who, "请"+who+"拿设备，"+other+"请回避");
-  } else if(gameMode==="online"){
-    // 房主先手，客户端已经在 sendStateToClient 里处理
-    startPlayerTurn();
+    gameState.hotseatCurrentPlayer = "p1";
+    showHandoff("玩家1","请玩家1拿设备，玩家2请回避");
   } else {
     startPlayerTurn();
   }
@@ -2308,6 +2310,9 @@ function drawCards(player, n){
   }
 }
 
+/* ============================================================
+   灵魂链接辅助
+   ============================================================ */
 function getSoulLinkOwner(player){
   if(!gameState) return null;
   const other = player === gameState.p1 ? gameState.p2 : gameState.p1;
@@ -2332,6 +2337,7 @@ function startPlayerTurn(){
     return;
   }
   if(p.burnStacks > 0){
+    // 灼烧伤害（吃铁卫减伤）
     let burnDmg = p.burnStacks;
     if(p.passiveId === "tank") burnDmg = Math.max(1, burnDmg - 1);
     addLog("burn",p.name+" 受到灼烧伤害 "+burnDmg+" 点。");
@@ -2398,11 +2404,6 @@ function renderGame(){
       if(current==="p1") p1CanAct = true;
       else p2CanAct = true;
     }
-  } else if(gameState.mode==="online"){
-    if(!gameState.gameOver){
-      if(ONLINE.isHost && current==="p1") p1CanAct = true;
-      else if(!ONLINE.isHost && current==="p2") p2CanAct = true;
-    }
   }
   $("p1ActionArea").style.display = p1CanAct ? "flex" : "none";
   $("p2ActionArea").style.display = p2CanAct ? "flex" : "none";
@@ -2421,9 +2422,6 @@ function renderGame(){
   }
   renderSkillButtons();
   renderHand();
-  if(gameState.mode === "online" && ONLINE.isHost && ONLINE.conn && ONLINE.conn.open){
-    sendStateToClient();
-  }
 }
 function renderSkillButtons(){
   document.querySelectorAll(".skill-btn-dynamic").forEach(b=>b.remove());
@@ -2438,11 +2436,6 @@ function renderSkillButtons(){
     if(gameState.hotseatPhase==="playing" && !gameState.gameOver){
       if(gameState.current==="p1"){area = $("p1ActionArea"); endBtn = $("btnEndTurn");}
       else {area = $("p2ActionArea"); endBtn = $("btnEndTurn2");}
-    }
-  } else if(gameState.mode==="online"){
-    if(!gameState.gameOver){
-      if(ONLINE.isHost && gameState.current==="p1"){area = $("p1ActionArea"); endBtn = $("btnEndTurn");}
-      else if(!ONLINE.isHost && gameState.current==="p2"){area = $("p2ActionArea"); endBtn = $("btnEndTurn2");}
     }
   }
   if(!area || !endBtn) return;
@@ -2498,7 +2491,6 @@ function renderPlayer(p, side){
   equipWrap.innerHTML = "";
 
   const isThisPlayerTurn = gameState.current === (p === gameState.p1 ? "p1" : "p2");
-  const isMySide = (side === getViewerSide());
 
   const skillGroup = document.createElement("div");
   skillGroup.className = "equip-group";
@@ -2513,7 +2505,6 @@ function renderPlayer(p, side){
     el.className = "equip-slot skill-slot" + (slot ? " filled" : "");
     if(slot){
       const card = CARD_DB[slot.cardId];
-      if(!card){ el.textContent = "?"; skillSlotsWrap.appendChild(el); return; }
       let cdText = "";
       if(slot.cd > 0){ cdText = `<div class="eq-cd">CD: ${slot.cd}</div>`; }
       let body = `<div class="eq-name">${card.name}</div>`;
@@ -2522,7 +2513,8 @@ function renderPlayer(p, side){
         el.classList.toggle("toggle-on", !!on);
         body += `<div class="eq-desc">普攻⚡${card.toggleCost}双倍</div>`;
         body += `<div class="eq-toggle${on?'':' off'}">${on?'● 开启':'○ 关闭'}</div>`;
-        if(!p.isAI && isThisPlayerTurn && isMySide){
+        // 只有当前玩家且非 AI 时，点击才切换；否则显示详情
+        if(!p.isAI && isThisPlayerTurn){
           el.onclick = ()=>toggleEye(p, i);
         } else {
           el.onclick = ()=>showCardDetail(card);
@@ -2562,7 +2554,6 @@ function renderPlayer(p, side){
     el.className = "equip-slot passive-slot" + (slot ? " filled" : "");
     if(slot){
       const card = CARD_DB[slot.cardId];
-      if(!card){ el.textContent = "?"; passiveSlotsWrap.appendChild(el); return; }
       el.innerHTML = `<div class="eq-name">${card.name}</div><div class="eq-desc">${formatCardDesc(card.desc||card.effect)}</div>`;
       el.onclick = ()=>showCardDetail(card);
     } else {
@@ -2581,7 +2572,7 @@ function renderPlayer(p, side){
     if(p.counters[i]){
       const el = document.createElement("div");
       const cData = CARD_DB[p.counters[i].cardId];
-      if(isOwnCounter && cData){
+      if(isOwnCounter){
         el.className = "counter-card own";
         const lv = cData.rarity;
         el.title = cData.name+"："+(cData.desc||cData.effect);
@@ -2592,6 +2583,7 @@ function renderPlayer(p, side){
       } else {
         el.className = "counter-card hidden-counter";
         el.textContent = "反制";
+        el.title = "盖放的反制牌";
       }
       counterWrap.appendChild(el);
     } else {
@@ -2601,7 +2593,7 @@ function renderPlayer(p, side){
     }
   }
   $(prefix+"HandCount").textContent = p.hand.length;
-  $(prefix+"DeckCount").textContent = gameState.sharedDeck ? gameState.sharedDeck.length : (p.deck ? p.deck.length : 0);
+  $(prefix+"DeckCount").textContent = gameState.sharedDeck ? gameState.sharedDeck.length : p.deck.length;
 }
 function renderHand(){
   const wrap1 = $("p1Hand"), wrap2 = $("p2Hand");
@@ -2619,19 +2611,12 @@ function renderHand(){
       if(gameState.current === "p1"){activePlayer = gameState.p1; targetWrap = wrap1;}
       else {activePlayer = gameState.p2; targetWrap = wrap2;}
     }
-  } else if(gameState.mode === "online"){
-    if(ONLINE.isHost){
-      if(gameState.current === "p1"){activePlayer = gameState.p1; targetWrap = wrap1;}
-    } else {
-      if(gameState.current === "p2"){activePlayer = gameState.p2; targetWrap = wrap2;}
-    }
   }
   if(!activePlayer || !targetWrap) return;
   targetWrap.style.display = "flex";
   const p = activePlayer;
   p.hand.forEach(card=>{
     const cardData = CARD_DB[card.id];
-    if(!cardData) return;
     const el = document.createElement("div");
     el.className = "card";
     const usable = canUseCard(cardData, p);
@@ -2750,7 +2735,6 @@ function canUseCard(card, p){
 }
 function useCard(card, p){
   if(gameState.pendingForesight){toast("请先完成当前选择");return}
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("useCard", {uid: card.uid}); return; }
   const cardData = CARD_DB[card.id];
   const enemy = p===gameState.p1?gameState.p2:gameState.p1;
   const idx = p.hand.findIndex(c=>c.uid===card.uid);
@@ -2804,6 +2788,7 @@ function useCard(card, p){
     return;
   }
   if(cardData.name === "熔铸"){
+    // 熔铸也视为功能牌，先过陷阱
     const countered = triggerCounters(enemy,"func",p,0);
     if(countered==="cancel"){
       p.hand.splice(idx,1);
@@ -2816,6 +2801,7 @@ function useCard(card, p){
     openForgeDialog(p, card, idx);
     return;
   }
+  // 通用功能牌：先过陷阱
   const countered = triggerCounters(enemy,"func",p,0);
   if(countered==="cancel"){
     p.hand.splice(idx,1);
@@ -2945,12 +2931,14 @@ function executeCardEffect(cardData, p, enemy){
           break;
         }
         if(p.isAI){
+          // AI 自动选稀有度最高的一张
           let bestIdx = 0, bestOrder = -1;
           top.forEach((id, i) => {
             const ord = lvOrder(CARD_DB[id].rarity);
             if(ord > bestOrder){ bestOrder = ord; bestIdx = i; }
           });
           const chosen = top.splice(bestIdx, 1)[0];
+          // 剩余放回牌库底（数组头部）
           pile.unshift(...top);
           p.hand.push({id: chosen, uid: uid()});
           addLog("sys", p.name+" 使用预知，选择了【"+CARD_DB[chosen].name+"】");
@@ -2993,11 +2981,25 @@ function renderForgeSelection(){
     const el = document.createElement("div");
     el.className = "card";
     if(sel.indexOf(c.uid) !== -1) el.classList.add("selected-for-discard");
+    let cdText = "";
+    if(cd.cd && cd.cd > 0) cdText = ` <span class="cm-cd">CD${cd.cd}</span>`;
+    let costText = "";
+    if(cd.type === "skill"){
+      if(cd.toggleable) costText = ` <span class="cm-cost">普攻⚡${cd.toggleCost||6}</span>`;
+      else if(cd.consumeAll) costText = ` <span class="cm-cost">⚡全部</span>`;
+      else if(cd.free) costText = ` <span class="cm-cost" style="color:#4ade80">⚡0</span>`;
+      else { const c = getEnergyCost(cd); if(c>0) costText = ` <span class="cm-cost">⚡${c}</span>`; }
+    } else if(cd.type === "counter"){
+      const c = getEnergyCost(cd);
+      if(c > 0) costText = ` <span class="cm-cost">⚡${c}</span>`;
+    } else if(cd.type === "remove"){
+      costText = ` <span class="cm-cost">⚡${REMOVE_COST}</span>`;
+    }
     el.innerHTML = `
       <span class="card-level lv-${cd.rarity}">${cd.rarity}</span>
       <div class="card-name">${cd.name}</div>
       <div class="card-tags">${cd.major}·${cd.minor}</div>
-      <div class="card-meta">${typeName(cd.type)}</div>
+      <div class="card-meta">${typeName(cd.type)}${cdText}${costText}</div>
       <div class="card-effect">${formatCardDesc(cd.desc||cd.effect)}</div>`;
     el.onclick = ()=>{
       const i = sel.indexOf(c.uid);
@@ -3012,12 +3014,6 @@ function renderForgeSelection(){
 function confirmForge(){
   const pf = gameState.pendingForge;
   if(!pf) return;
-  if(gameState.mode === "online" && !ONLINE.isHost){
-    sendAction("confirmForge", {uids: pf.selected.slice()});
-    gameState.pendingForge = null;
-    $("forgeOverlay").classList.remove("active");
-    return;
-  }
   const p = pf.player;
   const sel = pf.selected;
   const idx = p.hand.findIndex(c=>c.uid===pf.card.uid);
@@ -3058,11 +3054,20 @@ function showForesightModal(){
   html += `<div class="foresight-cards">`;
   fs.cards.forEach((id, i)=>{
     const c = CARD_DB[id];
+    let cdText = "";
+    if(c.cd && c.cd > 0) cdText = ` CD${c.cd}`;
+    let costText = "";
+    if(c.type === "skill"){
+      if(c.toggleable) costText = ` 普攻⚡${c.toggleCost||6}`;
+      else if(c.consumeAll) costText = ` ⚡全部`;
+      else if(c.free) costText = ` ⚡0`;
+      else { const cc = getEnergyCost(c); if(cc>0) costText = ` ⚡${cc}`; }
+    }
     html += `<div class="foresight-card" onclick="selectForesightCard(${i})">
       <span class="card-level lv-${c.rarity}">${c.rarity}</span>
       <div class="fc-name">${c.name}</div>
       <div class="fc-tags">${c.major}·${c.minor}</div>
-      <div class="fc-type">${typeName(c.type)}</div>
+      <div class="fc-type">${typeName(c.type)}${cdText}${costText}</div>
       <div class="fc-effect">${formatCardDesc(c.desc||c.effect)}</div>
     </div>`;
   });
@@ -3073,17 +3078,12 @@ function showForesightModal(){
   $("modal").classList.add("active");
 }
 function selectForesightCard(index){
-  if(gameState.mode === "online" && !ONLINE.isHost){
-    sendAction("selectForesight", {index});
-    gameState.pendingForesight = null;
-    closeModal();
-    return;
-  }
   const fs = gameState.pendingForesight;
   if(!fs) return;
   const chosenId = fs.cards[index];
   const remaining = fs.cards.filter((_, i) => i !== index);
   const pile = fs.pile;
+  // 剩余放回牌库底（数组头部）
   pile.unshift(...remaining);
   fs.player.hand.push({id: chosenId, uid: uid()});
   addLog("sys", fs.player.name + " 预知未来，选择了【" + CARD_DB[chosenId].name + "】");
@@ -3096,14 +3096,13 @@ function showRemoveDialog(p, card, idx){
   const enemy = p===gameState.p1?gameState.p2:gameState.p1;
   if(enemy.counters.length === 0){toast("对方没有反制牌可以拆除");return}
   if((p.energy||0) < REMOVE_COST){toast("能量不足，拆除需要⚡"+REMOVE_COST);return}
-  let html = "<div style='text-align:left'>选择要拆除的对方反制牌（固定消耗 ⚡" + REMOVE_COST + "）：</div>";
+  let html = "<div style='text-align:left'>选择要拆除的对方反制牌（拆除固定消耗 ⚡" + REMOVE_COST + "，不显示目标费用）：</div>";
   enemy.counters.forEach((c,i)=>{
     html += `<div style="margin-top:8px;padding:8px;background:rgba(168,85,247,.1);border-radius:6px;cursor:pointer" onclick="doRemoveCounter(${i},'${card.uid}')">拆除对方的反制牌 #${i+1}</div>`;
   });
   showModal("使用拆除牌", html, [{text:"取消",fn:closeModal}]);
 }
 function doRemoveCounter(counterIdx, cardUid){
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("removeCounter", {counterIdx, cardUid}); closeModal(); return; }
   const p = gameState.current==="p1"?gameState.p1:gameState.p2;
   const enemy = p===gameState.p1?gameState.p2:gameState.p1;
   const idx = p.hand.findIndex(c=>c.uid===cardUid);
@@ -3140,13 +3139,13 @@ function showEquipReplaceDialog(p, card, idx, isSkill){
       const cdText = (isSkill && slot.cd > 0) ? `（CD${slot.cd}）` : "";
       html += `<div style="margin-top:8px;padding:8px;background:rgba(255,255,255,.05);border-radius:6px;cursor:pointer;border:1px solid ${accentColor}40" onclick="doEquipReplace('${isSkill?'skill':'passive'}',${i},'${card.uid}')">
         <b style="color:#f0c040">${CARD_DB[slot.cardId].name}</b>${cdText}
+        <div style="font-size:11px;color:#888;margin-top:3px">${formatCardDesc(CARD_DB[slot.cardId].desc||CARD_DB[slot.cardId].effect)}</div>
       </div>`;
     }
   });
   showModal("替换装备", html, [{text:"取消",fn:closeModal}]);
 }
 function doEquipReplace(type, slotIdx, cardUid){
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("equipReplace", {type, slotIdx, cardUid}); closeModal(); return; }
   const p = gameState.current==="p1"?gameState.p1:gameState.p2;
   const idx = p.hand.findIndex(c=>c.uid===cardUid);
   if(idx===-1) return;
@@ -3174,22 +3173,27 @@ function doEquipReplace(type, slotIdx, cardUid){
 function showCounterReplaceDialog(p, card, idx){
   const newCardData = CARD_DB[card.id];
   const cost = getEnergyCost(newCardData);
-  if((p.energy||0) < cost){ toast("能量不足，替换需要⚡"+cost); return; }
-  let html = `<div style='text-align:left;margin-bottom:8px'>反制区已满，选择要替换的反制牌：<br><span style="font-size:12px;color:#fbbf24">替换将独立消耗 ⚡${cost} 能量</span></div>`;
+  if((p.energy||0) < cost){
+    toast("能量不足，替换需要⚡"+cost);
+    return;
+  }
+  let html = `<div style='text-align:left;margin-bottom:8px'>反制区已满，选择要替换的反制牌：<br><span style="font-size:12px;color:#fbbf24">替换将独立消耗 ⚡${cost} 能量，原牌费用不退还</span></div>`;
   p.counters.forEach((c,i)=>{
     html += `<div style="margin-top:8px;padding:8px;background:rgba(168,85,247,.1);border-radius:6px;cursor:pointer" onclick="doCounterReplace(${i},'${card.uid}')">替换反制牌 #${i+1}（${CARD_DB[c.cardId].name}）</div>`;
   });
   showModal("替换反制牌", html, [{text:"取消",fn:closeModal}]);
 }
 function doCounterReplace(counterIdx, cardUid){
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("counterReplace", {counterIdx, cardUid}); closeModal(); return; }
   const p = gameState.current==="p1"?gameState.p1:gameState.p2;
   const idx = p.hand.findIndex(c=>c.uid===cardUid);
   if(idx===-1) return;
   if(p.counterReplaceUsed){toast("本回合已替换过反制");return}
   const newCardData = CARD_DB[p.hand[idx].id];
   const cost = getEnergyCost(newCardData);
-  if((p.energy||0) < cost){ toast("能量不足，替换需要⚡"+cost); return; }
+  if((p.energy||0) < cost){
+    toast("能量不足，替换需要⚡"+cost+"（当前"+(p.energy||0)+"）");
+    return;
+  }
   p.energy -= cost;
   addLog("energy", p.name + " 替换反制消耗 ⚡" + cost + "（剩余 " + p.energy + "）");
   const old = p.counters[counterIdx];
@@ -3207,7 +3211,6 @@ function toggleEye(p, slotIdx){
   if(gameState.gameOver) return;
   if(gameState.current!==(p===gameState.p1?"p1":"p2")) return;
   if(p.isAI) return;
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("toggleEye", {slot: slotIdx}); return; }
   const slot = p.skillEquip[slotIdx];
   if(!slot) return;
   const cardData = CARD_DB[slot.cardId];
@@ -3223,14 +3226,13 @@ function toggleEye(p, slotIdx){
     return;
   }
   p.eyeActive = true;
-  addLog("sys", p.name + " 开启【" + cardData.name + "】");
+  addLog("sys", p.name + " 开启【" + cardData.name + "】（普攻将消耗⚡" + (cardData.toggleCost||EYE_TOGGLE_COST) + "翻倍）");
   renderGame();
 }
 
 function doAttack(){
   if(gameState.gameOver) return;
   if(gameState.pendingForesight){toast("请先完成预知选择");return}
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("attack"); return; }
   const p = gameState.current==="p1"?gameState.p1:gameState.p2;
   const enemy = p===gameState.p1?gameState.p2:gameState.p1;
   if(p.hasAttacked) return;
@@ -3243,7 +3245,7 @@ function doAttack(){
   let dmg = p.atkBase + p.atkBonus + p.tempAtk;
   if(p.passiveId==="sword") dmg += 1;
 
-  const eyeSlot = p.skillEquip.find(s => s && CARD_DB[s.cardId] && CARD_DB[s.cardId].toggleable);
+  const eyeSlot = p.skillEquip.find(s => s && CARD_DB[s.cardId].toggleable);
   if(eyeSlot && p.eyeActive){
     const eyeCost = CARD_DB[eyeSlot.cardId].toggleCost || EYE_TOGGLE_COST;
     if((p.energy || 0) >= eyeCost){
@@ -3265,12 +3267,13 @@ function doAttack(){
     uiState.selectedCardUid = null; renderGame(); return;
   } else if(typeof countered==="number") dmg = countered;
   applyDamage(p,enemy,dmg);
-  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="无尽之刃")){
+  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="无尽之刃")){
     p.endlessStacks = (p.endlessStacks||0) + 1;
     p.atkBonus += 1;
     addLog("sys",p.name+" 无尽之刃触发，永久攻击+1（"+p.endlessStacks+"次）");
   }
-  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="迅捷") && !p.swiftUsed){
+  // 迅捷：本回合首次普攻后摸 1 张
+  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="迅捷") && !p.swiftUsed){
     p.swiftUsed = true;
     drawCards(p,1);
     addLog("sys", p.name + " 迅捷触发，摸1张牌。");
@@ -3283,11 +3286,12 @@ function doAttack(){
 }
 function applyDamage(attacker, target, dmg){
   const targetPanelId = target===gameState.p1 ? "p1Panel" : "p2Panel";
+  // 铁卫被动：所有受伤-1（最低1点）
   if(target.passiveId==="tank"){
     dmg = Math.max(1, dmg - 1);
     addLog("sys", target.name + " 铁卫被动触发，伤害-1。");
   }
-  if(target.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="铁壁") && !target.wallUsed){
+  if(target.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="铁壁") && !target.wallUsed){
     target.wallUsed = true;
     dmg = Math.max(1,dmg-2);
     addLog("sys",target.name+" 铁壁被动触发，伤害-2。");
@@ -3303,11 +3307,12 @@ function applyDamage(attacker, target, dmg){
     }
   }
   if(remaining>0){
-    if(target.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="不屈") && !target.immortalUsed && target.hp - remaining <= 0){
+    // 不屈：每场限一次免死，触发后进入弃牌区
+    if(target.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="不屈") && !target.immortalUsed && target.hp - remaining <= 0){
       target.immortalUsed = true;
       target.hp = 1;
       target.immortalActive = true;
-      const slotIdx = target.passiveEquip.findIndex(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="不屈");
+      const slotIdx = target.passiveEquip.findIndex(s=>s && CARD_DB[s.cardId].name==="不屈");
       if(slotIdx !== -1){
         const removed = target.passiveEquip[slotIdx];
         target.passiveEquip[slotIdx] = null;
@@ -3343,12 +3348,17 @@ function showFloat(panelId, text, type){
   setTimeout(()=>el.remove(),1000);
 }
 
+/* ============================================================
+   反制触发判定（事件归属修正）
+   attack: 抵抗 / 闪避 / 反击 / 绝对防御
+   skill:  沉默 / 自食其果
+   func:   陷阱
+   ============================================================ */
 function triggerCounters(enemy, eventType, attacker, dmg){
-  if(!enemy.counters || enemy.counters.length===0) return null;
+  if(enemy.counters.length===0) return null;
   for(let i=0;i<enemy.counters.length;i++){
     const c = enemy.counters[i];
     const cardData = CARD_DB[c.cardId];
-    if(!cardData) continue;
     let triggered = false, result = null;
     if(eventType==="attack"){
       if(cardData.name==="抵抗"){triggered=true;result=Math.max(1,dmg-1)}
@@ -3383,11 +3393,9 @@ function useSkill(p, slotIdx){
   if(gameState.gameOver) return;
   if(gameState.pendingForesight){toast("请先完成预知选择");return}
   if(gameState.current!==(p===gameState.p1?"p1":"p2")) return;
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("useSkill", {slot: slotIdx}); return; }
   const slot = p.skillEquip[slotIdx];
   if(!slot) return;
   const cardData = CARD_DB[slot.cardId];
-  if(!cardData) return;
   if(cardData.type!=="skill"){toast("这不是主动技能");return}
   if(cardData.noUse){toast("此技能通过点击装备槽开关");return}
   if(slot.cd>0){toast("技能冷却中："+slot.cd+"回合");return}
@@ -3403,7 +3411,7 @@ function useSkill(p, slotIdx){
     if(p.resonanceDiscount > 0 && base > 0){
       const disc = Math.min(p.resonanceDiscount, base);
       base -= disc;
-      p.resonanceDiscount = 0;
+      p.resonanceDiscount = 0; // 共鸣只作用于下一张技能
       addLog("sys", p.name + " 共鸣减费 -" + disc);
     }
     actualCost = base;
@@ -3422,6 +3430,7 @@ function useSkill(p, slotIdx){
 
   const enemy = p===gameState.p1?gameState.p2:gameState.p1;
 
+  // 预计算技能伤害（用于自食其果反弹）
   let pendingDamage = 0;
   switch(cardData.name){
     case "火球术": pendingDamage = 2; break;
@@ -3481,6 +3490,8 @@ function useSkill(p, slotIdx){
         p.hand[pi] = enemy.hand[ei];
         enemy.hand[ei] = tmp;
         addLog("sys",p.name+" 镜像效果：双方各随机交换一张手牌。");
+      } else {
+        addLog("sys",p.name+" 镜像效果：有一方无手牌，交换未生效。");
       }
       break;
     }
@@ -3490,7 +3501,7 @@ function useSkill(p, slotIdx){
       gameState.lastDoomCaster = p;
       gameState.suppressGameOver = true;
       applyDamage(p,enemy,5);
-      applyDamage(p,p,5);
+      applyDamage(p,p,5); // 自伤走 applyDamage（吃护盾/铁卫/不屈）
       gameState.suppressGameOver = false;
       break;
     }
@@ -3522,9 +3533,8 @@ function endTurn(){
   if(gameState.pendingDiscard) return;
   if(gameState.pendingForge) return;
   if(gameState.pendingForesight){toast("请先完成预知选择");return}
-  if(gameState.mode === "online" && !ONLINE.isHost){ sendAction("endTurn"); return; }
   const p = gameState.current==="p1"?gameState.p1:gameState.p2;
-  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="余音") && (p.energy||0) >= 5){
+  if(p.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="余音") && (p.energy||0) >= 5){
     drawCards(p, 1);
     addLog("sys", p.name + " 余音触发（能量≥5），摸1张牌。");
   }
@@ -3536,15 +3546,6 @@ function endTurn(){
         p.discard.push(removed.id);
       }
       addLog("sys", p.name + " 弃置了多余的手牌");
-    } else if(gameState.mode === "online"){
-      if(p === gameState.p1){
-        showForceDiscard(p); return;
-      } else {
-        gameState.pendingDiscard = p;
-        gameState.discardSelected = [];
-        renderGame();
-        return;
-      }
     } else { showForceDiscard(p); return; }
   }
   doEndTurn();
@@ -3576,15 +3577,28 @@ function renderForceDiscard(){
   wrap.innerHTML = "";
   p.hand.forEach(card=>{
     const cardData = CARD_DB[card.id];
-    if(!cardData) return;
     const el = document.createElement("div");
     el.className = "card";
     if(selected.indexOf(card.uid) !== -1) el.classList.add("selected-for-discard");
+    let cdText = "";
+    if(cardData.cd && cardData.cd > 0) cdText = ` <span class="cm-cd">CD${cardData.cd}</span>`;
+    let costText = "";
+    if(cardData.type === "skill"){
+      if(cardData.toggleable) costText = ` <span class="cm-cost">普攻⚡${cardData.toggleCost||6}</span>`;
+      else if(cardData.consumeAll) costText = ` <span class="cm-cost">⚡全部</span>`;
+      else if(cardData.free) costText = ` <span class="cm-cost" style="color:#4ade80">⚡0</span>`;
+      else { const c = getEnergyCost(cardData); if(c>0) costText = ` <span class="cm-cost">⚡${c}</span>`; }
+    } else if(cardData.type === "counter"){
+      const c = getEnergyCost(cardData);
+      if(c > 0) costText = ` <span class="cm-cost">⚡${c}</span>`;
+    } else if(cardData.type === "remove"){
+      costText = ` <span class="cm-cost">⚡${REMOVE_COST}</span>`;
+    }
     el.innerHTML = `
       <span class="card-level lv-${cardData.rarity}">${cardData.rarity}</span>
       <div class="card-name">${cardData.name}</div>
       <div class="card-tags">${cardData.major}·${cardData.minor}</div>
-      <div class="card-meta">${typeName(cardData.type)}</div>
+      <div class="card-meta">${typeName(cardData.type)}${cdText}${costText}</div>
       <div class="card-effect">${formatCardDesc(cardData.desc||cardData.effect)}</div>`;
     el.onclick = () => toggleDiscardSelection(card.uid);
     wrap.appendChild(el);
@@ -3601,13 +3615,6 @@ function confirmDiscard(){
   const selected = gameState.discardSelected;
   const need = Math.max(0, p.hand.length - limit);
   if(selected.length < need){toast("还需选择 "+(need - selected.length)+" 张");return}
-  if(gameState.mode === "online" && !ONLINE.isHost){
-    sendAction("confirmDiscard", {uids: selected.slice()});
-    gameState.pendingDiscard = null;
-    gameState.discardSelected = [];
-    $("discardOverlay").classList.remove("active");
-    return;
-  }
   for(const u of selected){
     const i = p.hand.findIndex(c => c.uid === u);
     if(i === -1) continue;
@@ -3640,6 +3647,7 @@ function doEndTurn(){
     gameState.current = "p1";
     drawCards(gameState.p1,2);
     drawCards(gameState.p2,2);
+    // 难度额外摸牌（仅AI）
     if(gameState.diff && gameState.diff.extraDraw > 0 && gameState.p2.isAI){
       drawCards(gameState.p2, gameState.diff.extraDraw);
     }
@@ -3700,27 +3708,13 @@ function showGameOver(winner){
   else if(isP1Win) html = `<div class="gameover-title win">胜 利</div>`;
   else html = `<div class="gameover-title lose">失 败</div>`;
   html += `<div class="gameover-stats">用时：${gameState.turn}轮<br>${gameState.p1.name}：${Math.max(0,gameState.p1.hp)}血<br>${gameState.p2.name}：${Math.max(0,gameState.p2.hp)}血</div>`;
-  const isOnline = gameState.mode === "online";
-  const isHost = isOnline && ONLINE.isHost;
   html += `<div style="text-align:center;margin-top:20px">
     <button class="menu-btn small" style="margin:0 6px" onclick="showBattleLog()">📜 战斗日志</button>
-    ${isOnline
-      ? `<button class="menu-btn small" style="margin:0 6px" onclick="onlineRematch()">${isHost ? '再来一局' : '请求再战'}</button>`
-      : `<button class="menu-btn small" style="margin:0 6px" onclick="restartGame()">再来一局</button>`}
-    <button class="menu-btn small" style="margin:0 6px" onclick="backToMenuFromGameOver()">返回主菜单</button>
+    <button class="menu-btn small" style="margin:0 6px" onclick="restartGame()">再来一局</button>
+    <button class="menu-btn small" style="margin:0 6px" onclick="showScreen('menuScreen')">返回主菜单</button>
   </div>`;
   $("gameoverContent").innerHTML = html;
   showScreen("gameoverScreen");
-  if(isOnline && isHost && ONLINE.conn && ONLINE.conn.open){
-    ONLINE.conn.send({type:"game-over", winner: winner});
-  }
-}
-function backToMenuFromGameOver(){
-  if(gameState && gameState.mode === "online"){
-    leaveOnlineRoom();
-  } else {
-    showScreen("menuScreen");
-  }
 }
 function restartGame(){
   if(gameMode==="ai") startAIGame();
@@ -3728,10 +3722,6 @@ function restartGame(){
 }
 function surrender(){
   if(!confirm("确定投降？")) return;
-  if(gameState.mode === "online" && !ONLINE.isHost){
-    sendAction("surrender");
-    return;
-  }
   gameState.gameOver = true;
   const loser = gameState.current==="p1"?gameState.p1:gameState.p2;
   const winner = loser===gameState.p1?gameState.p2:gameState.p1;
@@ -3742,7 +3732,6 @@ function showGameInfo(){
   const fmtSkill = (p) => p.skillEquip.map(s=>{
     if(!s) return "空";
     const cd = CARD_DB[s.cardId];
-    if(!cd) return "?";
     if(cd.toggleable){
       return cd.name + "(" + (p.eyeActive?"开":"关") + ")";
     }
@@ -3752,7 +3741,7 @@ function showGameInfo(){
     else costText = "⚡"+getEnergyCost(cd);
     return cd.name+(s.cd>0?"(CD"+s.cd+")":"")+costText;
   }).join(" / ");
-  const fmtPassive = (p) => p.passiveEquip.map(s=>s && CARD_DB[s.cardId] ? CARD_DB[s.cardId].name : "空").join(" / ");
+  const fmtPassive = (p) => p.passiveEquip.map(s=>s?CARD_DB[s.cardId].name:"空").join(" / ");
   showModal("游戏信息",
     `<div style="text-align:left;font-size:13px;line-height:1.9">
     <b style="color:#60a5fa">${p1.name}</b>（${p1.cls}）<br>
@@ -3795,6 +3784,7 @@ function aiAction(ai, player, level){
       executeCardEffect(CARD_DB[card.id], ai, player);
     }
   }
+  // 装备被动（扩展评分）
   if(level>=2 && !ai.equipUsed){
     let picked = -1, pickedScore = -1;
     for(let i=0;i<ai.hand.length;i++){
@@ -3824,6 +3814,7 @@ function aiAction(ai, player, level){
       }
     }
   }
+  // 装备技能
   if(level>=3 && !ai.equipUsed){
     let picked = -1, pickedScore = -1;
     for(let i=0;i<ai.hand.length;i++){
@@ -3851,6 +3842,7 @@ function aiAction(ai, player, level){
       }
     }
   }
+  // 熔铸
   if(level>=2){
     const fi = ai.hand.findIndex(c=>CARD_DB[c.id].name==="熔铸");
     if(fi !== -1 && ai.hand.length >= 5){
@@ -3865,9 +3857,10 @@ function aiAction(ai, player, level){
       }
       const gain = forgeCount * 2;
       ai.energy = (ai.energy||0) + gain;
-      addLog("energy", ai.name + " 熔铸：弃 " + forgeCount + " 张牌，⚡+" + gain);
+      addLog("energy", ai.name + " 熔铸：弃 " + forgeCount + " 张牌，⚡+" + gain + "（当前 " + ai.energy + "）");
     }
   }
+  // 共鸣
   if(level>=2){
     const ri = ai.hand.findIndex(c=>CARD_DB[c.id].name==="共鸣");
     if(ri !== -1){
@@ -3878,6 +3871,7 @@ function aiAction(ai, player, level){
       addLog("sys", ai.name + " 共鸣生效：下个技能消耗-2");
     }
   }
+  // 防守 / 成长 / 能量
   if(level>=2){
     let guard=0;
     while(guard<10){
@@ -3900,6 +3894,7 @@ function aiAction(ai, player, level){
       executeCardEffect(CARD_DB[card.id], ai, player);
     }
   }
+  // 拆除对方反制
   if(level>=3 && !ai.removeUsed && player.counters.length > 0 && (ai.energy||0) >= REMOVE_COST){
     const ri = ai.hand.findIndex(c=>CARD_DB[c.id].type==="remove");
     if(ri !== -1){
@@ -3915,6 +3910,7 @@ function aiAction(ai, player, level){
       addLog("sys", ai.name + " 使用【拆除】清除了你的一张反制牌。");
     }
   }
+  // 功能牌（看牌/弃牌/获取/交换/预知/命运之轮）
   if(level>=2){
     let guard = 0;
     while(guard < 8){
@@ -3938,6 +3934,7 @@ function aiAction(ai, player, level){
       executeCardEffect(cd, ai, player);
     }
   }
+  // 反制放置
   if(level>=2){
     let guard=0;
     while(guard<5){
@@ -3961,10 +3958,16 @@ function aiAction(ai, player, level){
       if(ai.counters.length < 2){
         if((ai.energy||0) < placeCost) break;
         ai.energy -= placeCost;
-        addLog("energy", ai.name + " 放置反制消耗 ⚡" + placeCost);
+        addLog("energy", ai.name + " 放置反制消耗 ⚡" + placeCost + "（剩余 " + ai.energy + "）");
         ai.hand.splice(ci,1);
         ai.counters.push({cardId:card.id, uid:card.uid});
-        addLog("sys",ai.name+" 放置了一张反制牌。");
+        if(level>=5){
+          const tend = getPlayerTendency();
+          const kind = tend.preferSkillCounter ? "技能反制" : "攻击反制";
+          addLog("learn","【地狱AI】根据你的出牌习惯，布置了一张"+kind+"牌。");
+        } else {
+          addLog("sys",ai.name+" 放置了一张反制牌。");
+        }
       } else {
         let lowIdx = 0;
         let lowScore = counterUtility(CARD_DB[ai.counters[0].cardId]);
@@ -3978,17 +3981,19 @@ function aiAction(ai, player, level){
         if(shouldReplace){
           if((ai.energy||0) < placeCost) break;
           ai.energy -= placeCost;
-          addLog("energy", ai.name + " 替换反制消耗 ⚡" + placeCost);
+          addLog("energy", ai.name + " 替换反制消耗 ⚡" + placeCost + "（剩余 " + ai.energy + "）");
           const old = ai.counters[lowIdx];
           ai.discard.push(old.cardId);
           ai.hand.splice(ci,1);
           ai.counters[lowIdx] = {cardId:card.id, uid:card.uid};
-          addLog("sys",ai.name+" 替换了一张反制牌。");
+          if(level>=5){ addLog("learn","【地狱AI】替换了一张反制牌，针对你的打法。"); }
+          else { addLog("sys",ai.name+" 替换了一张反制牌。"); }
         } else break;
       }
     }
   }
-  const eyeSlotIdx = ai.skillEquip.findIndex(s => s && CARD_DB[s.cardId] && CARD_DB[s.cardId].toggleable);
+  // 锐眼开关
+  const eyeSlotIdx = ai.skillEquip.findIndex(s => s && CARD_DB[s.cardId].toggleable);
   if(eyeSlotIdx !== -1){
     const slot = ai.skillEquip[eyeSlotIdx];
     const canActivate = slot.deployedAt !== gameState.turn;
@@ -4009,13 +4014,23 @@ function aiAction(ai, player, level){
     let usedSkill = false;
     if(level>=3){
       let skillOrder = ["坍缩","激荡","火球术","疾风斩","天雷","连锁闪电","生命虹吸","灵魂链接","时空跳跃","镜像","诅咒","血契","末日","强运"];
+      if(level>=5){
+        const tend = getPlayerTendency();
+        if(tend.playerIsDefensive){
+          skillOrder = ["坍缩","末日","天雷","血契","镜像","激荡","火球术","连锁闪电","诅咒","时空跳跃","疾风斩","生命虹吸","灵魂链接","强运"];
+          addLog("learn","【地狱AI】检测到你偏向防守，切换为爆发输出策略。");
+        } else {
+          skillOrder = ["时空跳跃","灵魂链接","生命虹吸","诅咒","激荡","坍缩","镜像","连锁闪电","火球术","疾风斩","天雷","血契","末日","强运"];
+          addLog("learn","【地狱AI】检测到你偏向进攻，切换为控制续航策略。");
+        }
+      }
       for(const sname of skillOrder){
         if(usedSkill) break;
         for(let i=0;i<ai.skillEquip.length;i++){
           const slot = ai.skillEquip[i];
           if(!slot) continue;
           const cd = CARD_DB[slot.cardId];
-          if(!cd || cd.type!=="skill" || cd.name !== sname || slot.cd !== 0 || cd.noUse) continue;
+          if(cd.type!=="skill" || cd.name !== sname || slot.cd !== 0 || cd.noUse) continue;
           if(cd.consumeAll){
             if((ai.energy||0) < 4) continue;
           } else {
@@ -4050,7 +4065,7 @@ function doAIAttack(ai, player){
   let dmg = ai.atkBase + ai.atkBonus + ai.tempAtk;
   if(ai.passiveId==="sword") dmg += 1;
 
-  const eyeSlot = ai.skillEquip.find(s => s && CARD_DB[s.cardId] && CARD_DB[s.cardId].toggleable);
+  const eyeSlot = ai.skillEquip.find(s => s && CARD_DB[s.cardId].toggleable);
   if(eyeSlot && ai.eyeActive){
     const eyeCost = CARD_DB[eyeSlot.cardId].toggleCost || EYE_TOGGLE_COST;
     if((ai.energy||0) >= eyeCost){
@@ -4068,8 +4083,8 @@ function doAIAttack(ai, player){
   if(countered==="cancel"){addLog("sys",player.name+" 的反制牌取消了这次攻击！"); ai.tempAtk=0; ai.hasAttacked=true; return}
   else if(typeof countered==="number") dmg = countered;
   applyDamage(ai,player,dmg);
-  if(ai.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="无尽之刃")){ai.endlessStacks=(ai.endlessStacks||0)+1; ai.atkBonus+=1;}
-  if(ai.passiveEquip.some(s=>s && CARD_DB[s.cardId] && CARD_DB[s.cardId].name==="迅捷") && !ai.swiftUsed){
+  if(ai.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="无尽之刃")){ai.endlessStacks=(ai.endlessStacks||0)+1; ai.atkBonus+=1;}
+  if(ai.passiveEquip.some(s=>s && CARD_DB[s.cardId].name==="迅捷") && !ai.swiftUsed){
     ai.swiftUsed = true;
     drawCards(ai,1);
     addLog("sys", ai.name + " 迅捷触发，摸1张牌。");
@@ -4078,485 +4093,6 @@ function doAIAttack(ai, player){
   ai.hasAttacked = true;
 }
 
-/* ============================================================
-   联机对战模块（PeerJS）
-   ============================================================ */
-const ONLINE = {
-  peer: null, conn: null,
-  isHost: false, roomCode: null,
-  hostClass: null, hostDeck: null,
-  clientClass: null, clientDeck: null,
-  hostReady: false, clientReady: false,
-  gameOver: false
-};
-
-function generateRoomCode(){
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let s = "";
-  for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
-  return s;
-}
-
-function openOnlineLobby(){ showScreen("onlineLobbyScreen"); }
-
-function hostOnlineGame(){
-  if(typeof Peer === "undefined"){ toast("联机组件加载失败，请检查网络"); return; }
-  ONLINE.isHost = true;
-  ONLINE.roomCode = generateRoomCode();
-  ONLINE.hostClass = null; ONLINE.hostDeck = null;
-  ONLINE.clientClass = null; ONLINE.clientDeck = null;
-  ONLINE.hostReady = false; ONLINE.clientReady = false;
-  ONLINE.gameOver = false;
-  ONLINE.peer = new Peer("jobwar-" + ONLINE.roomCode, {debug: 1});
-  ONLINE.peer.on("open", ()=>{
-    showScreen("onlineRoomScreen");
-    renderOnlineRoom();
-  });
-  ONLINE.peer.on("error", (err)=>{
-    if(String(err).indexOf("unavailable-id") !== -1){
-      try{ ONLINE.peer.destroy(); }catch(e){}
-      hostOnlineGame();
-    } else {
-      toast("创建房间失败：" + err.type);
-    }
-  });
-  ONLINE.peer.on("connection", (conn)=>{
-    ONLINE.conn = conn;
-    conn.on("open", ()=>{
-      renderOnlineRoom();
-      if(ONLINE.hostClass){
-        conn.send({type:"host-choice", cls: ONLINE.hostClass, deck: ONLINE.hostDeck});
-      }
-    });
-    conn.on("data", handleOnlineMessage);
-    conn.on("close", ()=>handleDisconnect("对方已离开"));
-    conn.on("error", ()=>{});
-  });
-}
-
-function showJoinRoomInput(){
-  showModal("加入房间",
-    `<input type="text" id="roomCodeInput" maxlength="6" placeholder="输入 6 位房间码" style="width:100%;padding:14px;font-size:22px;text-align:center;letter-spacing:8px;text-transform:uppercase;background:rgba(0,0,0,.4);border:2px solid #4a4a6a;border-radius:10px;color:#f0c040;font-weight:bold">`,
-    [{text:"加入",fn:()=>{
-      const code = ($("roomCodeInput").value || "").trim().toUpperCase();
-      if(code.length !== 6){ toast("房间码必须是 6 位"); return; }
-      closeModal();
-      joinOnlineGame(code);
-    }},{text:"取消",fn:closeModal}]);
-}
-
-function joinOnlineGame(code){
-  if(typeof Peer === "undefined"){ toast("联机组件加载失败，请检查网络"); return; }
-  ONLINE.isHost = false;
-  ONLINE.roomCode = code;
-  ONLINE.hostClass = null; ONLINE.hostDeck = null;
-  ONLINE.clientClass = null; ONLINE.clientDeck = null;
-  ONLINE.hostReady = false; ONLINE.clientReady = false;
-  ONLINE.gameOver = false;
-  ONLINE.peer = new Peer({debug: 1});
-  ONLINE.peer.on("open", ()=>{
-    ONLINE.conn = ONLINE.peer.connect("jobwar-" + code, {reliable: true});
-    ONLINE.conn.on("open", ()=>{
-      showScreen("onlineRoomScreen");
-      renderOnlineRoom();
-    });
-    ONLINE.conn.on("data", handleOnlineMessage);
-    ONLINE.conn.on("close", ()=>handleDisconnect("对方已离开"));
-    ONLINE.conn.on("error", ()=>{});
-  });
-  ONLINE.peer.on("error", (err)=>{
-    if(String(err).indexOf("peer-unavailable") !== -1){
-      toast("房间不存在或已关闭");
-      showScreen("onlineLobbyScreen");
-    } else {
-      toast("连接失败：" + err.type);
-    }
-  });
-}
-
-function handleOnlineMessage(msg){
-  if(!msg || !msg.type) return;
-  switch(msg.type){
-    case "host-choice":
-      ONLINE.hostClass = msg.cls;
-      ONLINE.hostDeck = msg.deck;
-      renderOnlineRoom();
-      break;
-    case "client-choice":
-      ONLINE.clientClass = msg.cls;
-      ONLINE.clientDeck = msg.deck;
-      renderOnlineRoom();
-      break;
-    case "ready":
-      if(ONLINE.isHost) ONLINE.clientReady = true;
-      else ONLINE.hostReady = true;
-      renderOnlineRoom();
-      maybeStartOnlineGame();
-      break;
-    case "unready":
-      if(ONLINE.isHost) ONLINE.clientReady = false;
-      else ONLINE.hostReady = false;
-      renderOnlineRoom();
-      break;
-    case "action":
-      if(ONLINE.isHost) applyClientAction(msg);
-      break;
-    case "state":
-      if(!ONLINE.isHost) applyClientState(msg.state);
-      break;
-    case "toast":
-      toast(msg.msg);
-      break;
-    case "game-over":
-      if(!ONLINE.isHost){
-        ONLINE.gameOver = true;
-        setTimeout(()=>showGameOver(msg.winner), 200);
-      }
-      break;
-    case "rematch-request":
-      if(ONLINE.isHost) startOnlineRematch();
-      break;
-    case "rematch":
-      if(!ONLINE.isHost) applyOnlineRematch();
-      break;
-  }
-}
-
-function sendAction(action, data){
-  if(!ONLINE.conn || !ONLINE.conn.open) return;
-  ONLINE.conn.send({type:"action", action, data: data || {}});
-}
-
-function applyClientAction(msg){
-  const a = msg.action, d = msg.data || {};
-  const client = gameState.p2;
-  switch(a){
-    case "attack": doAttack(); break;
-    case "endTurn": endTurn(); break;
-    case "useCard": {
-      const card = client.hand.find(c=>c.uid === d.uid);
-      if(card) useCard(card, client);
-      break;
-    }
-    case "useSkill": useSkill(client, d.slot); break;
-    case "toggleEye": toggleEye(client, d.slot); break;
-    case "surrender": {
-      gameState.gameOver = true;
-      showGameOver(gameState.p1.name);
-      break;
-    }
-    case "confirmDiscard": {
-      const uids = d.uids || [];
-      const limit = getHandLimit(client);
-      const need = Math.max(0, client.hand.length - limit);
-      if(uids.length < need){ toast("对方弃牌数量不足"); break; }
-      for(const u of uids){
-        const i = client.hand.findIndex(c => c.uid === u);
-        if(i === -1) continue;
-        const card = client.hand[i];
-        client.discard.push(card.id);
-        client.hand.splice(i, 1);
-        addLog("sys", client.name + " 弃置了 " + CARD_DB[card.id].name);
-      }
-      gameState.pendingDiscard = null;
-      gameState.discardSelected = [];
-      doEndTurn();
-      break;
-    }
-    case "removeCounter": doRemoveCounter(d.counterIdx, d.cardUid); break;
-    case "selectForesight": selectForesightCard(d.index); break;
-    case "confirmForge": {
-      if(gameState.pendingForge){
-        gameState.pendingForge.selected = d.uids || [];
-      }
-      confirmForge();
-      break;
-    }
-    case "equipReplace": doEquipReplace(d.type, d.slotIdx, d.cardUid); break;
-    case "counterReplace": doCounterReplace(d.counterIdx, d.cardUid); break;
-  }
-}
-
-function renderOnlineRoom(){
-  const el = $("onlineRoomContent");
-  if(!el) return;
-  let html = "";
-
-  html += `<div class="online-room-code">
-    <div style="font-size:12px;color:#888">${ONLINE.isHost ? '房间码（发给好友）' : '你加入的房间'}</div>
-    <div class="code">${ONLINE.roomCode}</div>
-    ${ONLINE.isHost ? `<div style="margin-top:12px"><button class="action-btn" onclick="copyText('${ONLINE.roomCode}')">📋 复制房间码</button></div>` : ''}
-    <div class="online-warn">微信内可能无法联机，请用浏览器打开</div>
-  </div>`;
-
-  const connected = ONLINE.conn && ONLINE.conn.open;
-  html += `<div class="online-status ${connected?'connected':'waiting'}">
-    ${connected ? '✅ 已连接' : '⏳ 等待对方加入...'}
-  </div>`;
-
-  const hostName = ONLINE.isHost ? "你（房主）" : "对方（房主）";
-  const clientName = ONLINE.isHost ? "对方" : "你";
-
-  html += `<div class="online-player-slot ${ONLINE.hostReady?'ready':''}">
-    <div class="op-name">${hostName}
-      <span class="op-tag ${ONLINE.hostReady?'ready':'waiting'}">${ONLINE.hostReady?'已准备':'未准备'}</span>
-    </div>
-    <div class="op-info">职业：${ONLINE.hostClass || '未选择'} · 牌组：${ONLINE.hostDeck || '未选择'}</div>
-  </div>`;
-
-  html += `<div class="online-player-slot ${ONLINE.clientReady?'ready':''}">
-    <div class="op-name">${clientName}
-      <span class="op-tag ${ONLINE.clientReady?'ready':'waiting'}">${ONLINE.clientReady?'已准备':'未准备'}</span>
-    </div>
-    <div class="op-info">职业：${ONLINE.clientClass || '未选择'} · 牌组：${ONLINE.clientDeck || '未选择'}</div>
-  </div>`;
-
-  const myChoiceDone = ONLINE.isHost ? !!ONLINE.hostClass : !!ONLINE.clientClass;
-  const canChoose = !myChoiceDone && connected && (ONLINE.isHost || ONLINE.hostClass);
-
-  if(canChoose){
-    html += `<div class="online-choose-title">选择职业</div>`;
-    html += `<div class="mini-class-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">`;
-    Object.keys(CLASSES).forEach(name=>{
-      const c = CLASSES[name];
-      html += `<div class="mini-class-card" onclick="onlinePickClass('${name}')">
-        <div class="mc-name">${name}</div>
-        <div class="mc-hp">${c.hp}血 · 攻${c.atk} · 技${c.skillSlots}/被${c.passiveSlots}</div>
-        <div class="mc-passive">${c.passive}</div>
-      </div>`;
-    });
-    html += `</div>`;
-
-    html += `<div class="online-choose-title">选择牌组</div>`;
-    html += `<select class="deck-select" id="onlineDeckSelect">
-      ${getDeckNames().map(n=>`<option value="${n}">${n}</option>`).join("")}
-    </select>`;
-    html += `<div style="text-align:center;margin-top:16px">
-      <button class="action-btn gold" onclick="onlineConfirmChoice()">确认选择</button>
-    </div>`;
-  } else if(!myChoiceDone){
-    html += `<div style="text-align:center;color:#888;font-size:13px;padding:20px">
-      ${ONLINE.isHost ? '等待对方加入...' : '等待房主选择职业...'}
-    </div>`;
-  } else {
-    const myReady = ONLINE.isHost ? ONLINE.hostReady : ONLINE.clientReady;
-    html += `<div style="text-align:center;margin-top:20px">
-      <button class="action-btn ${myReady?'':'gold'}" onclick="onlineToggleReady()" style="font-size:16px;padding:12px 32px">
-        ${myReady ? '取消准备' : '准备'}
-      </button>
-    </div>`;
-    if(!ONLINE.isHost && !ONLINE.hostReady){
-      html += `<div style="text-align:center;color:#888;font-size:12px;margin-top:12px">等待房主准备...</div>`;
-    }
-  }
-
-  el.innerHTML = html;
-}
-
-function onlinePickClass(cls){
-  if(ONLINE.isHost){
-    ONLINE.hostClass = cls;
-    ONLINE.hostDeck = $("onlineDeckSelect") ? $("onlineDeckSelect").value : "默认一代";
-  } else {
-    ONLINE.clientClass = cls;
-    ONLINE.clientDeck = $("onlineDeckSelect") ? $("onlineDeckSelect").value : "默认一代";
-  }
-  renderOnlineRoom();
-}
-
-function onlineConfirmChoice(){
-  const cls = ONLINE.isHost ? ONLINE.hostClass : ONLINE.clientClass;
-  const deck = $("onlineDeckSelect") ? $("onlineDeckSelect").value : "默认一代";
-  if(!cls){ toast("请先选择职业"); return; }
-  if(ONLINE.isHost){
-    ONLINE.hostDeck = deck;
-    if(ONLINE.conn && ONLINE.conn.open){
-      ONLINE.conn.send({type:"host-choice", cls: ONLINE.hostClass, deck: ONLINE.hostDeck});
-    }
-  } else {
-    ONLINE.clientDeck = deck;
-    if(ONLINE.conn && ONLINE.conn.open){
-      ONLINE.conn.send({type:"client-choice", cls: ONLINE.clientClass, deck: ONLINE.clientDeck});
-    }
-  }
-  renderOnlineRoom();
-}
-
-function onlineToggleReady(){
-  const myReady = ONLINE.isHost ? ONLINE.hostReady : ONLINE.clientReady;
-  if(ONLINE.isHost) ONLINE.hostReady = !myReady;
-  else ONLINE.clientReady = !myReady;
-  if(ONLINE.conn && ONLINE.conn.open){
-    ONLINE.conn.send({type: myReady ? "unready" : "ready"});
-  }
-  renderOnlineRoom();
-  maybeStartOnlineGame();
-}
-
-function maybeStartOnlineGame(){
-  if(!ONLINE.isHost) return;
-  if(ONLINE.hostReady && ONLINE.clientReady && ONLINE.hostClass && ONLINE.clientClass){
-    startOnlineGame();
-  }
-}
-
-function startOnlineGame(){
-  gameMode = "online";
-  selectedGameMode = "standard";
-  const deck1 = getAllDecks()[ONLINE.hostDeck].cards;
-  const deck2 = getAllDecks()[ONLINE.clientDeck].cards;
-  const p1 = createPlayer("房主", ONLINE.hostClass, deck1, false, null);
-  const p2 = createPlayer("挑战者", ONLINE.clientClass, deck2, false, null);
-  const firstPlayer = Math.random() < 0.5 ? "p1" : "p2";
-  initGame(p1, p2, null, firstPlayer);
-  if(ONLINE.conn && ONLINE.conn.open){
-    ONLINE.conn.send({type:"toast", msg: "对局开始！" + (firstPlayer==="p1"?"房主":"挑战者") + "先手"});
-  }
-}
-
-function applyClientState(state){
-  const hadPendingDiscard = gameState && gameState.pendingDiscard;
-  gameState = state;
-  uiState.selectedCardUid = null;
-  renderGame();
-  if(state.pendingDiscardOwner === "p2" && !hadPendingDiscard){
-    gameState.pendingDiscard = gameState.p2;
-    gameState.discardSelected = [];
-    showForceDiscard(gameState.p2);
-  }
-}
-
-function sendStateToClient(){
-  if(!ONLINE.conn || !ONLINE.conn.open) return;
-  const gs = gameState;
-  const safePlayer = (p, isSelf) => ({
-    name: p.name, cls: p.cls, passiveId: p.passiveId,
-    hp: p.hp, maxHp: p.maxHp, shield: p.shield,
-    atkBonus: p.atkBonus, atkBase: p.atkBase, tempAtk: p.tempAtk,
-    burnStacks: p.burnStacks, energy: p.energy,
-    resonanceDiscount: p.resonanceDiscount,
-    discard: p.discard.slice(),
-    skillEquip: p.skillEquip.map(s => s ? {cardId: s.cardId, cd: s.cd, deployedAt: s.deployedAt} : null),
-    passiveEquip: p.passiveEquip.map(s => s ? {cardId: s.cardId, cd: s.cd, deployedAt: s.deployedAt} : null),
-    hand: isSelf
-      ? p.hand.map(c => ({id: c.id, uid: c.uid}))
-      : p.hand.map((_, i) => ({id: "__HIDDEN__", uid: "h" + i})),
-    deck: p.deck ? p.deck.map(() => "__HIDDEN__") : [],
-    counters: isSelf
-      ? p.counters.map(c => ({cardId: c.cardId, uid: c.uid}))
-      : p.counters.map(c => ({cardId: "__HIDDEN__", uid: c.uid})),
-    isAI: false,
-    eyeActive: p.eyeActive,
-    immortalUsed: p.immortalUsed,
-    immortalActive: p.immortalActive,
-    cursed: p.cursed,
-    soulLinkTurns: p.soulLinkTurns,
-    swiftUsed: p.swiftUsed,
-    wallUsed: p.wallUsed,
-    stunNext: p.stunNext,
-    hasAttacked: p.hasAttacked,
-    equipUsed: p.equipUsed,
-    counterReplaceUsed: p.counterReplaceUsed,
-    removeUsed: p.removeUsed,
-    endlessStacks: p.endlessStacks || 0
-  });
-  const state = {
-    turn: gs.turn,
-    current: gs.current,
-    gameOver: gs.gameOver,
-    mode: "online",
-    diff: null,
-    p1: safePlayer(gs.p1, false),
-    p2: safePlayer(gs.p2, true),
-    log: gs.log.slice(-40),
-    sharedDeck: gs.sharedDeck ? gs.sharedDeck.map(()=>"__HIDDEN__") : null,
-    pendingDiscardOwner: gs.pendingDiscard ? (gs.pendingDiscard === gs.p1 ? "p1" : "p2") : null,
-    pendingForesight: null,
-    pendingForge: null,
-    aiMemory: null,
-    lastDoomCaster: null,
-    suppressGameOver: false,
-    hotseatPhase: null,
-    hotseatCurrentPlayer: null,
-    discardSelected: [],
-    publicMode: "standard"
-  };
-  ONLINE.conn.send({type:"state", state});
-}
-
-function leaveOnlineRoom(){
-  try{ if(ONLINE.conn) ONLINE.conn.close(); }catch(e){}
-  try{ if(ONLINE.peer) ONLINE.peer.destroy(); }catch(e){}
-  ONLINE.peer = null; ONLINE.conn = null;
-  ONLINE.hostClass = null; ONLINE.hostDeck = null;
-  ONLINE.clientClass = null; ONLINE.clientDeck = null;
-  ONLINE.hostReady = false; ONLINE.clientReady = false;
-  ONLINE.gameOver = false;
-  gameState = null; gameMode = null;
-  showScreen("pvpScreen");
-}
-
-function handleDisconnect(reason){
-  if(ONLINE.gameOver) return;
-  if(gameState && !gameState.gameOver && gameState.mode === "online"){
-    addLog("sys", "对方断线，" + reason);
-    gameState.gameOver = true;
-    const winner = ONLINE.isHost ? gameState.p1.name : gameState.p2.name;
-    setTimeout(()=>showGameOver(winner), 100);
-  } else {
-    toast(reason || "连接已断开");
-    leaveOnlineRoom();
-  }
-}
-
-function onlineRematch(){
-  if(!gameState || gameState.mode !== "online") return;
-  if(ONLINE.isHost) startOnlineRematch();
-  else if(ONLINE.conn && ONLINE.conn.open) ONLINE.conn.send({type:"rematch-request"});
-}
-
-function startOnlineRematch(){
-  if(!ONLINE.isHost) return;
-  ONLINE.hostReady = false;
-  ONLINE.hostClass = null;
-  ONLINE.hostDeck = null;
-  ONLINE.clientReady = false;
-  ONLINE.clientClass = null;
-  ONLINE.clientDeck = null;
-  ONLINE.gameOver = false;
-  gameState = null;
-  if(ONLINE.conn && ONLINE.conn.open){
-    ONLINE.conn.send({type:"rematch"});
-  }
-  showScreen("onlineRoomScreen");
-  renderOnlineRoom();
-}
-
-function applyOnlineRematch(){
-  ONLINE.hostReady = false;
-  ONLINE.hostClass = null;
-  ONLINE.hostDeck = null;
-  ONLINE.clientReady = false;
-  ONLINE.clientClass = null;
-  ONLINE.clientDeck = null;
-  ONLINE.gameOver = false;
-  gameState = null;
-  showScreen("onlineRoomScreen");
-  renderOnlineRoom();
-}
-
-function loadPeerJS(cb){
-  if(typeof Peer !== "undefined"){ cb(); return; }
-  const s = document.createElement("script");
-  s.src = "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
-  s.onload = cb;
-  s.onerror = ()=>{ console.warn("PeerJS 加载失败，联机功能不可用"); };
-  document.head.appendChild(s);
-}
-
-/* ============================================================
-   更新日志 & 初始化
-   ============================================================ */
 function toggleUpdateLog(){$("updateLogPanel").classList.toggle("open")}
 function renderUpdateLog(){
   $("updateLogPanel").innerHTML = UPDATE_LOG.map(entry=>`
@@ -4569,8 +4105,7 @@ function renderUpdateLog(){
 window.addEventListener("load", ()=>{
   renderUpdateLog();
   showScreen("menuScreen");
-  loadPeerJS(()=>{ console.log("PeerJS 已加载"); });
-  console.log("职战 v2.7.0 已加载");
+  console.log("职战 v2.6.0 已加载");
 });
 </script>
 </body>
